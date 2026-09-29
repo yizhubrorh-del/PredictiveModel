@@ -9,10 +9,11 @@ Llevamos un modelo de Machine Learning desde un notebook hasta un prototipo desp
 
 ## Integrantes
 
-| Nombre | Usuario GitHub |
+| Nombre | CC |
 |---|---|
-| _Completar_ | _@usuario_ |
-| _Completar_ | _@usuario_ |
+| Faber Josué Palacio Cuyan | 1127793801 |
+| Juan José Jaramillo Marín | 1035973625 |
+| Juan José Ortiz del Rio | 1007565771 |
 
 ## Estructura del repositorio
 
