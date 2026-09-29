@@ -1,0 +1,71 @@
+[
+  {
+    "input": {
+      "Brand": "Kia",
+      "Year": 2019.0,
+      "Model": "Cerato",
+      "Car/Suv": "Sedan",
+      "Title": "2019 Kia Cerato S",
+      "UsedOrNew": "USED",
+      "Transmission": "Automatic",
+      "Engine": "4 cyl, 2 L",
+      "DriveType": "Front",
+      "FuelType": "Unleaded",
+      "FuelConsumption": "7.4 L / 100 km",
+      "Kilometres": "54412",
+      "ColourExtInt": "Silver / Black",
+      "Location": "Revesby, NSW",
+      "CylindersinEngine": "4 cyl",
+      "BodyType": "Sedan",
+      "Doors": " 4 Doors",
+      "Seats": " 5 Seats"
+    },
+    "actual_price": 24990.0
+  },
+  {
+    "input": {
+      "Brand": "Honda",
+      "Year": 2008.0,
+      "Model": "CR-V",
+      "Car/Suv": "SUV",
+      "Title": "2008 Honda CR-V (4X4) Luxury",
+      "UsedOrNew": "USED",
+      "Transmission": "Automatic",
+      "Engine": "4 cyl, 2.4 L",
+      "DriveType": "4WD",
+      "FuelType": "Unleaded",
+      "FuelConsumption": "10 L / 100 km",
+      "Kilometres": "242389",
+      "ColourExtInt": "Silver / -",
+      "Location": "Blacktown, NSW",
+      "CylindersinEngine": "4 cyl",
+      "BodyType": "SUV",
+      "Doors": " 4 Doors",
+      "Seats": " 5 Seats"
+    },
+    "actual_price": 8999.0
+  },
+  {
+    "input": {
+      "Brand": "Toyota",
+      "Year": 2005.0,
+      "Model": "Camry",
+      "Car/Suv": "Sedan",
+      "Title": "2005 Toyota Camry Sportivo",
+      "UsedOrNew": "USED",
+      "Transmission": "Automatic",
+      "Engine": "4 cyl, 2.4 L",
+      "DriveType": "Front",
+      "FuelType": "Unleaded",
+      "FuelConsumption": "8.8 L / 100 km",
+      "Kilometres": "246947",
+      "ColourExtInt": "Gold / -",
+      "Location": "Minto, NSW",
+      "CylindersinEngine": "4 cyl",
+      "BodyType": "Sedan",
+      "Doors": " 4 Doors",
+      "Seats": " 5 Seats"
+    },
+    "actual_price": 5999.0
+  }
+]

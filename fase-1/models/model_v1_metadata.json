@@ -1,0 +1,86 @@
+{
+  "model_version": "v1",
+  "created_at": "2026-09-29T22:09:17+00:00",
+  "problem": "regression",
+  "target": "Price",
+  "target_transform": "log1p / expm1",
+  "algorithm": "HistGradientBoostingRegressor",
+  "hyperparameters": {
+    "min_samples_leaf": 10,
+    "max_leaf_nodes": 63,
+    "max_iter": 1200,
+    "max_features": 0.5,
+    "learning_rate": 0.05,
+    "l2_regularization": 1.0
+  },
+  "input_columns": [
+    "Brand",
+    "Year",
+    "Model",
+    "Car/Suv",
+    "Title",
+    "UsedOrNew",
+    "Transmission",
+    "Engine",
+    "DriveType",
+    "FuelType",
+    "FuelConsumption",
+    "Kilometres",
+    "ColourExtInt",
+    "Location",
+    "CylindersinEngine",
+    "BodyType",
+    "Doors",
+    "Seats"
+  ],
+  "engineered_features": [
+    "Year",
+    "Kilometres",
+    "EngineLitres",
+    "Cylinders",
+    "FuelConsumption",
+    "Doors",
+    "Seats",
+    "UsedOrNew",
+    "Transmission",
+    "DriveType",
+    "FuelType",
+    "BodyType",
+    "State",
+    "ColourExt",
+    "Brand",
+    "Model"
+  ],
+  "data": {
+    "source": "Kaggle - Australian Vehicle Prices",
+    "rows_raw": 16734,
+    "rows_used": 16680,
+    "rows_train": 13344,
+    "rows_test": 3336,
+    "test_size": 0.2,
+    "random_state": 42
+  },
+  "cv_mae": 5370.302605733619,
+  "test_metrics": {
+    "MAE": 4929.855004962264,
+    "MedAE": 2572.8472289563524,
+    "RMSE": 11332.523744983346,
+    "R2": 0.8919207972202655,
+    "R2_log": 0.923670737037909,
+    "MAPE": 0.13186169625206373
+  },
+  "baseline_test_metrics": {
+    "MAE": 18477.728417266186,
+    "MedAE": 11685.0,
+    "RMSE": 35306.3913249724,
+    "R2": -0.049048381617240455,
+    "R2_log": -0.0004864231607546454,
+    "MAPE": 0.625718179256657
+  },
+  "library_versions": {
+    "python": "3.14.7",
+    "scikit-learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.5.3"
+  }
+}
