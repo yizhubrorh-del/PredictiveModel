@@ -1,0 +1,102 @@
+{
+  "version": "v2",
+  "created_at_utc": "2026-10-28T23:55:04.140334+00:00",
+  "problem": "regression",
+  "target": "Price",
+  "algorithm": "HistGradientBoostingRegressor",
+  "target_transform": "log1p / expm1",
+  "hyperparameters": {
+    "min_samples_leaf": 10,
+    "max_leaf_nodes": 63,
+    "max_iter": 1200,
+    "max_features": 0.5,
+    "learning_rate": 0.05,
+    "l2_regularization": 1.0,
+    "random_state": 43
+  },
+  "input_columns": [
+    "Brand",
+    "Year",
+    "Model",
+    "Car/Suv",
+    "Title",
+    "UsedOrNew",
+    "Transmission",
+    "Engine",
+    "DriveType",
+    "FuelType",
+    "FuelConsumption",
+    "Kilometres",
+    "ColourExtInt",
+    "Location",
+    "CylindersinEngine",
+    "BodyType",
+    "Doors",
+    "Seats"
+  ],
+  "required_columns": [
+    "Brand",
+    "Year",
+    "Model",
+    "UsedOrNew",
+    "Transmission",
+    "Engine",
+    "DriveType",
+    "FuelType",
+    "FuelConsumption",
+    "Kilometres",
+    "ColourExtInt",
+    "Location",
+    "CylindersinEngine",
+    "BodyType",
+    "Doors",
+    "Seats"
+  ],
+  "optional_columns": [
+    "Car/Suv",
+    "Title"
+  ],
+  "engineered_features": [
+    "Year",
+    "Kilometres",
+    "EngineLitres",
+    "Cylinders",
+    "FuelConsumption",
+    "Doors",
+    "Seats",
+    "UsedOrNew",
+    "Transmission",
+    "DriveType",
+    "FuelType",
+    "BodyType",
+    "State",
+    "ColourExt",
+    "Brand",
+    "Model"
+  ],
+  "data": {
+    "source": "Kaggle - Australian Vehicle Prices",
+    "file": "data\\raw\\australian_vehicle_prices.csv",
+    "sha256": "770cde151901ce9ef0e5bf94ca68ba736a0e3417d80e6f49825c3f1e861fc0b6",
+    "rows_raw": 16734,
+    "rows_used": 16680,
+    "rows_train": 13344,
+    "rows_test": 3336
+  },
+  "split": {
+    "strategy": "deciles_precio",
+    "test_size": 0.2,
+    "seed": 43
+  },
+  "metric_primary": "MAE",
+  "dependencies": "fase-2/requirements.txt",
+  "python_version": "3.14.0",
+  "library_versions": {
+    "scikit-learn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.5.3",
+    "joblib": "1.6.0"
+  },
+  "git_commit": "1e350fe33f59602cbb17e67beb14be72815a57a2",
+  "training_note": "Hiperparámetros elegidos en Fase 1; sin nueva búsqueda en Fase 2."
+}
