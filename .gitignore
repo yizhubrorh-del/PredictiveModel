@@ -16,3 +16,7 @@ __pycache__/
 .vscode/
 .DS_Store
 Thumbs.db
+# Resultados temporales de la Fase 2
+fase-2/outputs/
+fase-2/models/v-docker/
+fase-2/models/v-demo-*/
