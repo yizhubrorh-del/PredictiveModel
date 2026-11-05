@@ -13,7 +13,6 @@ Llevamos un modelo de Machine Learning desde un notebook hasta un prototipo desp
 |---|---|
 | Faber Josué Palacio Cuyan | 1127793801 |
 | Juan José Jaramillo Marín | 1035973625 |
-| Juan José Ortiz del Rio | 1007565771 |
 
 ## Estructura del repositorio
 
@@ -38,7 +37,7 @@ Llevamos un modelo de Machine Learning desde un notebook hasta un prototipo desp
 | Fase | Descripción | Estado |
 |---|---|---|
 | 1 | Modelo predictivo | ✅ Completa: [ver README](fase-1/README.md) |
-| 2 | Scripts (`train.py`, `predict.py`), Docker y pytest | Pendiente |
+| 2 | Scripts, versionamiento, Docker y pytest | En integración — [ver documentación](fase-2/README.md) |
 | 3 | API REST (`/health`, `/predict`, `/train`) | Pendiente |
 | 4 | Monitoreo y política de reentrenamiento | Pendiente |
 
