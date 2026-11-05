@@ -171,10 +171,13 @@ Las cinco pruebas de `tests/test_aplicacion.py` cubren:
 3. Procesamiento de valores faltantes.
 4. Rechazo de un CSV de entrenamiento al que falta una columna obligatoria.
 5. Generación de una segunda versión y rechazo de versiones duplicadas sin sobrescribir los artefactos originales.
+6. Registro del SHA de Git en los metadatos mediante `--source-commit`.
+7. Rechazo de identificadores SHA inválidos.
 
 Se utilizan datos sintéticos y directorios temporales: las pruebas **no descargan datos** ni modifican las versiones oficiales. El pipeline se ejecuta con menos iteraciones solo durante los tests.
 
-**Evidencia obtenida en Windows:** `5 passed in 15.59s`, Python 3.14.0 y pytest 9.2.0. Esta suite verifica principalmente entrenamiento y versionamiento; la validación de la CLI `predict.py` se comprobó manualmente y sus pruebas automatizadas de integración pueden ampliarse.
+**Evidencia en Windows:** 7 passed in 10.51s,
+Python 3.14.0 y pytest 9.2.0.
 
 ## 8. Docker
 
@@ -239,9 +242,29 @@ Si construiste la imagen **antes** de integrar `predict.py`, reconstruye la imag
 
 Para cargar los modelos `joblib` se deben usar **únicamente artefactos confiables**; este formato no es seguro para datos arbitrarios de terceros.
 
-## 10. Versionamiento, trazabilidad y Git Flow
 
-Cada directorio de versión contiene `metadata.json` con el identificador, la semilla, las dependencias, la configuración, el origen del dataset, su SHA-256, fechas, cantidades de registros y, cuando es posible, el commit de Git.
+### Trazabilidad de código fuente
+
+El script `train.py` permite especificar el commit de origen mediante el argumento opcional `--source-commit`.
+
+El argumento acepta un SHA completo de 40 caracteres hexadecimales, lo normaliza a minúsculas y lo almacena en el campo `git_commit` de `metadata.json`.
+
+Si no se proporciona, el script intenta recuperar el commit mediante `git rev-parse HEAD`, conservando el comportamiento original.
+
+Para entrenar dentro de Docker, se debe construir la imagen desde una revisión confirmada y limpia del repositorio. El SHA de esa revisión se puede obtener en PowerShell:
+
+```powershell
+$sha = git rev-parse HEAD
+```
+
+Después, se proporciona al entrenamiento mediante:
+
+```text
+--source-commit $sha
+```
+
+El SHA proporcionado identifica la revisión declarada como origen. El argumento valida su formato, pero no comprueba por sí solo que el contenido de la imagen coincida con esa revisión.
+
 
 **Limitación identificada:** dentro de Docker se excluye `.git` del contexto y la imagen no incorpora Git. Por tanto, el campo `git_commit` de un entrenamiento realizado en el contenedor **puede quedar en `null`** con la implementación actual de `train.py`. Los metadatos de `v1` y `v2` sí registran un commit de origen. Antes del cierre definitivo debe resolverse la trazabilidad de nuevos modelos Docker, por ejemplo mediante un argumento explícito `--source-commit` registrado y validado por el script.
 
