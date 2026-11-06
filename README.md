@@ -2,7 +2,7 @@
 
 Proyecto Integrador – **Modelos y Simulación de Sistemas I**
 
-Llevamos un modelo de Machine Learning desde un notebook hasta un prototipo desplegable: reproducible, contenerizado, expuesto mediante una API REST y con monitoreo básico.
+Llevamos un modelo de Machine Learning desde un notebook hasta una aplicación reproducible y contenerizada. Las siguientes fases incorporarán una API REST y mecanismos de monitoreo.
 
 **Problema:** regresión. Se estima el precio (`Price`, AUD) de un vehículo a partir de sus características (marca, modelo, año, kilometraje, motor, combustible, transmisión, tracción, carrocería, etc.).
 **Dataset:** [Australian Vehicle Prices – Kaggle](https://www.kaggle.com/datasets/nelgiriyewithana/australian-vehicle-prices) (16.734 registros, 19 variables).
@@ -37,7 +37,7 @@ Llevamos un modelo de Machine Learning desde un notebook hasta un prototipo desp
 | Fase | Descripción | Estado |
 |---|---|---|
 | 1 | Modelo predictivo | ✅ Completa: [ver README](fase-1/README.md) |
-| 2 | Scripts, versionamiento, Docker y pytest | En integración — [ver documentación](fase-2/README.md) |
+| 2 | Scripts, versionamiento, Docker y pytest | ✅ Completada — [ver documentación](fase-2/README.md) |
 | 3 | API REST (`/health`, `/predict`, `/train`) | Pendiente |
 | 4 | Monitoreo y política de reentrenamiento | Pendiente |
 
