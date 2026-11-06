@@ -164,7 +164,7 @@ Desde `fase-2`, con las dependencias instaladas:
 python -m pytest -v
 ```
 
-Las cinco pruebas de `tests/test_aplicacion.py` cubren:
+Las siete pruebas de `tests/test_aplicacion.py` cubren:
 
 1. Entrenamiento y guardado de modelo, métricas y metadatos.
 2. Recarga del artefacto y consistencia de predicciones.
@@ -178,6 +178,8 @@ Se utilizan datos sintéticos y directorios temporales: las pruebas **no descarg
 
 **Evidencia en Windows:** 7 passed in 10.51s,
 Python 3.14.0 y pytest 9.2.0.
+**Evidencia en Docker (Linux):** 7 passed in 3.86s,
+Python 3.14.10 y pytest 9.2.0.
 
 ## 8. Docker
 
@@ -230,7 +232,11 @@ docker run --rm `
 
 Si construiste la imagen **antes** de integrar `predict.py`, reconstruye la imagen con el comando de la sección 8.1. La carpeta `outputs` se monta con escritura y las otras dos con solo lectura.
 
-**Estado de verificación:** ya se comprobó dentro de Docker la carga de un modelo con `joblib` y sus tres predicciones mediante una llamada directa a Python. La ejecución de la CLI completa `predict.py` dentro del contenedor queda pendiente de verificar tras la integración y reconstrucción de la imagen.
+**Estado de verificación:** se ejecutó correctamente
+`predict.py` dentro de Docker con el modelo `v1`.
+Se generaron tres predicciones coincidentes con la
+ejecución local y se verificó la persistencia del
+archivo CSV en el equipo anfitrión.
 
 ## 9. Errores esperados y comprobaciones
 
@@ -283,16 +289,20 @@ El flujo de trabajo del equipo utiliza:
 
 Antes de generar la etiqueta `entrega-2`, se debe comprobar que todas las funciones estén integradas en `develop`, que la ejecución local y en Docker funcione y que se haya actualizado `main` mediante el flujo de revisión acordado.
 
+
 ## 11. Lista de verificación para el cierre
 
 - [x] `train.py` con CLI y artefactos versionados.
 - [x] Dos versiones (`v1`, `v2`) con métricas y metadatos.
 - [x] `predict.py` con CLI y archivo CSV de ejemplo.
-- [x] Construcción de imagen Docker y entrenamiento con persistencia verificados.
-- [x] Cinco pruebas de pytest ejecutadas correctamente en Windows.
-- [x] Predicción local y validación de error por columna obligatoria comprobadas.
-- [ ] Revisar e integrar los PR #3 y #4.
-- [ ] Reconstruir la imagen integrada y validar la CLI `predict.py` en Docker.
-- [ ] Resolver o documentar formalmente la referencia al commit para entrenamientos Docker.
-- [ ] Actualizar el README de la raíz y los integrantes activos.
-- [ ] Ejecutar la revisión final, integrar en `main` y crear la etiqueta de entrega.
+- [x] Entrenamiento dentro de Docker con persistencia.
+- [x] Predicción mediante CLI dentro de Docker.
+- [x] Siete pruebas pytest aprobadas en Windows.
+- [x] Siete pruebas pytest aprobadas en Docker (Linux).
+- [x] Validación de columnas obligatorias.
+- [x] Trazabilidad del commit mediante `--source-commit`.
+- [x] Comprobación del SHA en un entrenamiento real Docker.
+- [x] Pull Requests #1 al #6 integrados en `develop`.
+- [x] Integrantes activos actualizados en el README principal.
+- [ ] Integración final en `main`.
+- [ ] Creación de la etiqueta `entrega-2`.
