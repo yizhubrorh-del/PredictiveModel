@@ -156,3 +156,47 @@ def test_versionamiento_sin_sobrescritura(trained):
     with pytest.raises(FileExistsError, match="ya existe"):
         training.train(args)
     assert hashlib.sha256(v1_path.read_bytes()).hexdigest() == original_sha
+
+def test_source_commit_se_guarda_en_metadata(trained, tmp_path):
+    """El SHA proporcionado debe registrarse en los metadatos."""
+    sha = "A" * 40
+
+    args = Namespace(
+        data=str(trained["csv"]),
+        target="Price",
+        output_dir=str(tmp_path / "models"),
+        version="v-traceability",
+        seed=42,
+        test_size=0.2,
+        source_commit=sha,
+    )
+
+    with patch.object(training, "make_model", side_effect=fast_model):
+        version_dir = training.train(args)
+
+    metadata = json.loads(
+        (version_dir / "metadata.json").read_text(encoding="utf-8")
+    )
+
+    assert metadata["git_commit"] == sha.lower()
+    assert (version_dir / "modelo.joblib").is_file()
+
+
+def test_source_commit_invalido_es_rechazado(trained, tmp_path):
+    """Un SHA inválido no debe producir una versión del modelo."""
+    output_dir = tmp_path / "models"
+
+    args = Namespace(
+        data=str(trained["csv"]),
+        target="Price",
+        output_dir=str(output_dir),
+        version="v-invalid",
+        seed=42,
+        test_size=0.2,
+        source_commit="commit-invalido",
+    )
+
+    with pytest.raises(ValueError, match="source-commit"):
+        training.train(args)
+
+    assert not (output_dir / "v-invalid").exists()

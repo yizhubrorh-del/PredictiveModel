@@ -54,6 +54,14 @@ def git_commit() -> str | None:
 
 def train(args: argparse.Namespace) -> Path:
     data_path = Path(args.data)
+    source_commit = getattr(args, "source_commit", None)
+
+    if source_commit is not None:
+        if not re.fullmatch(r"[0-9a-fA-F]{40}", source_commit):
+            raise ValueError(
+                "--source-commit debe ser un SHA de Git de 40 caracteres hexadecimales."
+            )
+        source_commit = source_commit.lower()
     if not data_path.is_file():
         raise ValueError(f"No existe el archivo CSV: {data_path}")
     if args.target != TARGET:
@@ -140,7 +148,7 @@ def train(args: argparse.Namespace) -> Path:
             "numpy": np.__version__,
             "joblib": joblib.__version__,
         },
-        "git_commit": git_commit(),
+        "git_commit": source_commit or git_commit(),
         "training_note": "Hiperparámetros elegidos en Fase 1; sin nueva búsqueda en Fase 2.",
     }
 
@@ -168,6 +176,11 @@ def make_parser() -> argparse.ArgumentParser:
     parser.add_argument("--target", default="Price", help="Variable objetivo (Price).")
     parser.add_argument("--output-dir", required=True, help="Carpeta de versiones del modelo.")
     parser.add_argument("--version", required=True, help="Identificador único, p. ej. v1.")
+    parser.add_argument(
+        "--source-commit",
+        default=None,
+        help="SHA completo del commit de origen, útil para entrenamientos en Docker.",
+    )
     parser.add_argument("--seed", type=int, default=42, help="Semilla aleatoria.")
     parser.add_argument("--test-size", type=float, default=0.2, help="Proporción de prueba.")
     return parser
