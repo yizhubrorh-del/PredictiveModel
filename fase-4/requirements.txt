@@ -1,0 +1,4 @@
+# API y modelo (Fases 2-3, mismas versiones)
+-r ../fase-3/requirements.txt
+# Figuras del reporte de monitoreo (misma versión que requirements.txt de la raíz)
+matplotlib==3.11.2

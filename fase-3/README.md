@@ -18,7 +18,7 @@ Se implementa con **FastAPI**, que valida las entradas con Pydantic y genera doc
 
 **Sin código duplicado:** la API importa `train.py`, `src/` y los modelos versionados (`models/v1`, `models/v2`) directamente desde `fase-2/`. `app/config.py` agrega `fase-2` al `sys.path`. Esto es necesario porque los `.joblib` referencian `src.features.clean_raw`. Las pruebas también reutilizan el generador de datos sintéticos y el modelo rápido de `fase-2/tests/test_aplicacion.py`.
 
-El monitoreo pertenece a la Fase 4 y **no se implementa aquí**.
+El monitoreo pertenece a la Fase 4 y **no se implementa aquí**. Para que la Fase 4 pueda ampliar esta API sin copiarla, `create_app` acepta dos parámetros opcionales: `active_version`, que elige la versión por defecto de `/predict`, y `on_prediction`, que se llama tras cada predicción y puede devolver `ids_prediccion`. Sin ellos, el comportamiento es el descrito aquí.
 
 ## 2. Estructura
 
