@@ -1,0 +1,22 @@
+# Contexto = raíz del repositorio. Se excluye todo y se incluye solo lo necesario.
+*
+
+!fase-2/requirements.txt
+!fase-2/train.py
+!fase-2/src/
+!fase-2/tests/
+!fase-2/data/ejemplo_prediccion.csv
+# Solo las versiones oficiales; las de prueba se montan como volumen.
+!fase-2/models/v1/
+!fase-2/models/v2/
+
+!fase-3/
+fase-3/Dockerfile*
+fase-3/outputs/
+
+# El dataset NO va en la imagen: se monta en /app/data (solo lectura).
+**/__pycache__/
+**/.pytest_cache/
+**/*.pyc
+**/.env
+**/.env.*

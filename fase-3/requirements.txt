@@ -1,0 +1,10 @@
+# Dependencias del modelo (mismas versiones que la Fase 2)
+-r ../fase-2/requirements.txt
+# API REST
+fastapi==0.165.0
+uvicorn==0.54.0
+pydantic==2.14.4
+# Cliente de prueba
+requests==2.34.2
+# Pruebas (TestClient de FastAPI/Starlette)
+httpx2==2.16.2
