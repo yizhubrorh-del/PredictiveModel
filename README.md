@@ -2,7 +2,7 @@
 
 Proyecto Integrador – **Modelos y Simulación de Sistemas I**
 
-Llevamos un modelo de Machine Learning desde un notebook hasta una aplicación reproducible y contenerizada, expuesta mediante una API REST. La siguiente fase incorporará mecanismos de monitoreo.
+Llevamos un modelo de Machine Learning desde un notebook hasta una aplicación reproducible y contenerizada, expuesta mediante una API REST y supervisada con mecanismos de monitoreo y una política de reentrenamiento.
 
 **Problema:** regresión. Se estima el precio (`Price`, AUD) de un vehículo a partir de sus características (marca, modelo, año, kilometraje, motor, combustible, transmisión, tracción, carrocería, etc.).
 **Dataset:** [Australian Vehicle Prices – Kaggle](https://www.kaggle.com/datasets/nelgiriyewithana/australian-vehicle-prices) (16.734 registros, 19 variables).
@@ -27,7 +27,7 @@ Llevamos un modelo de Machine Learning desde un notebook hasta una aplicación r
 │   └── README.md
 ├── fase-2/                                  # Scripts y Docker   (Entrega 2)
 ├── fase-3/                                  # API REST (reutiliza fase-2)  (Entrega 3)
-├── fase-4/                                  # Monitoreo          (Entrega 3)
+├── fase-4/                                  # Monitoreo (amplía fase-3)    (Entrega 3)
 ├── requirements.txt
 └── README.md
 ```
@@ -39,7 +39,7 @@ Llevamos un modelo de Machine Learning desde un notebook hasta una aplicación r
 | 1 | Modelo predictivo | ✅ Completa: [ver README](fase-1/README.md) |
 | 2 | Scripts, versionamiento, Docker y pytest | ✅ Completada — [ver documentación](fase-2/README.md) |
 | 3 | API REST (`/health`, `/predict`, `/train`) | ✅ Implementada — [ver documentación](fase-3/README.md) |
-| 4 | Monitoreo y política de reentrenamiento | Pendiente |
+| 4 | Monitoreo y política de reentrenamiento | ✅ Implementada — [ver documentación](fase-4/README.md) |
 
 ### Resultado de la Fase 1
 `HistGradientBoostingRegressor` sobre `log(Price)`, en un pipeline de scikit-learn que recibe registros crudos.
@@ -62,6 +62,15 @@ pip install -r fase-3/requirements.txt
 cd fase-3
 uvicorn app.main:app --port 8000      # documentación en http://localhost:8000/docs
 python client.py demo                 # en otra terminal
+```
+
+API con monitoreo (Fase 4):
+
+```bash
+pip install -r fase-4/requirements.txt
+cd fase-4
+uvicorn api_monitoreo:create_app --factory --port 8000
+python monitor.py reporte --salida reportes/hoy     # en otra terminal
 ```
 
 ## Flujo de trabajo en Git

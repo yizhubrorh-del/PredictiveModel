@@ -8,6 +8,7 @@ import logging
 import threading
 import time
 from argparse import Namespace
+from collections.abc import Callable
 
 import numpy as np
 import pandas as pd
@@ -50,8 +51,28 @@ def _error(status_code: int, message: str, details=None) -> JSONResponse:
     return JSONResponse(status_code=status_code, content=body)
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
+# Firma del hook de predicción: (versión, registros de entrada, predicciones,
+# latencia en ms) -> identificadores de las predicciones (o None).
+PredictionHook = Callable[[str, list[dict], list[float], float], list[str] | None]
+
+
+def create_app(
+    settings: Settings | None = None,
+    *,
+    active_version: Callable[[], str] | None = None,
+    on_prediction: PredictionHook | None = None,
+) -> FastAPI:
+    """Crea la API.
+
+    Los parámetros opcionales permiten ampliarla sin modificarla (Fase 4):
+    `active_version` decide qué versión usa /predict cuando no se indica una, y
+    `on_prediction` se invoca tras cada predicción correcta (p. ej. para registrarla).
+    """
     settings = settings or Settings.from_env()
+
+    def default_version() -> str:
+        return active_version() if active_version else settings.default_version
+
     registry = ModelRegistry(settings.models_dir)
     train_lock = threading.Lock()
 
@@ -63,6 +84,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = settings
     app.state.registry = registry
     app.state.train_lock = train_lock
+    app.state.default_version = default_version
 
     # ---------- Manejo de errores: siempre {"error": ..., "detalles": [...]} ----------
     @app.exception_handler(RequestValidationError)
@@ -106,21 +128,23 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def health():
         """Estado del servicio. Responde 503 si el modelo por defecto no se puede cargar."""
         detail = None
+        current = default_version()
         try:
-            registry.get(settings.default_version)
+            registry.get(current)
         except (ModelNotFoundError, ModelLoadError) as exc:
             detail = str(exc)
         body = HealthResponse(
             status="ok" if detail is None else "degradado",
-            modelo_por_defecto=settings.default_version,
-            modelo_cargado=registry.is_loaded(settings.default_version),
+            modelo_por_defecto=current,
+            modelo_cargado=registry.is_loaded(current),
             versiones_disponibles=registry.available_versions(),
             dataset_disponible=settings.data_path.is_file(),
             detalle=detail,
         )
         return JSONResponse(status_code=200 if detail is None else 503, content=body.model_dump())
 
-    @app.post("/predict", response_model=PredictResponse, responses=ERROR_RESPONSES, tags=["modelo"])
+    @app.post("/predict", response_model=PredictResponse, response_model_exclude_none=True,
+              responses=ERROR_RESPONSES, tags=["modelo"])
     def predict(
         request: PredictRequest,
         version: str | None = Query(
@@ -129,19 +153,22 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         ),
     ):
         """Predice el precio (AUD) de uno o varios vehículos."""
-        loaded = load(version or settings.default_version)
+        start = time.perf_counter()
+        loaded = load(version or default_version())
+        records = [v.to_record() for v in request.vehicles]
         # Mismo orden de columnas que en el entrenamiento (como fase-2/predict.py);
         # los null se tratan como faltantes por clean_raw y los imputadores del pipeline.
-        X = pd.DataFrame([v.to_record() for v in request.vehicles]).reindex(
-            columns=loaded.metadata["input_columns"],
-        )
+        X = pd.DataFrame(records).reindex(columns=loaded.metadata["input_columns"])
         predictions = np.asarray(loaded.model.predict(X), dtype=float)
         if not np.isfinite(predictions).all():
             raise APIError(500, "El modelo produjo predicciones no válidas")
+        values = [round(float(p), 2) for p in predictions]
+        ids = None
+        if on_prediction is not None:
+            latency_ms = (time.perf_counter() - start) * 1000
+            ids = on_prediction(loaded.version, records, values, latency_ms)
         return PredictResponse(
-            version=loaded.version,
-            n=len(predictions),
-            predicciones=[round(float(p), 2) for p in predictions],
+            version=loaded.version, n=len(values), predicciones=values, ids_prediccion=ids,
         )
 
     @app.post(

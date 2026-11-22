@@ -112,6 +112,8 @@ class PredictResponse(BaseModel):
     moneda: str = "AUD"
     n: int
     predicciones: list[float]
+    # Solo cuando la API registra predicciones (Fase 4): permite enviar el precio real.
+    ids_prediccion: list[str] | None = None
 
 
 class TrainRequest(BaseModel):
